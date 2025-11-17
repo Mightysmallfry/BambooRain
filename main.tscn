@@ -1,0 +1,134 @@
+[gd_scene load_steps=17 format=3 uid="uid://dj3rc6akelrom"]
+
+[ext_resource type="Script" uid="uid://h1nnh327axrq" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="PackedScene" uid="uid://cf1t61vktok41" path="res://game.tscn" id="2_0xm2m"]
+[ext_resource type="Shader" uid="uid://bu2w7ycea54uh" path="res://subpixel.gdshader" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://bcmfxp06urp87" path="res://Weather/rain.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://dgskgbbec1p1y" path="res://Managers/skill_tree_manager.gd" id="5_lquwl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lquwl"]
+shader = ExtResource("2_1bvp3")
+shader_parameter/cam_offset = Vector2(0, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_h2yge"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_1bvp3"]
+_limits = [0.0, 0.3, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25748503, 0.18933555), 0.6231954, 0.6231954, 0, 0, Vector2(0.49900198, 0.3), 0.0, 0.0, 0, 0, Vector2(0.8003992, 0.22991252), -0.4501773, -0.4501773, 0, 0, Vector2(1, 0.08697091), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_lquwl"]
+curve = SubResource("Curve_1bvp3")
+
+[sub_resource type="Gradient" id="Gradient_7mycd"]
+colors = PackedColorArray(1, 1, 1, 0.078431375, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_272bh"]
+gradient = SubResource("Gradient_7mycd")
+
+[sub_resource type="Curve" id="Curve_5vw27"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_kek77"]
+_limits = [0.0, 30.0, 0.0, 1.0]
+_data = [Vector2(0, 14.5991955), 0.0, 0.0, 0, 0, Vector2(0.07784431, 24.558998), 58.432476, 58.432476, 0, 0, Vector2(0.2015968, 27.878933), 0.0, 0.0, 0, 0, Vector2(1, 30), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_4c57u"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_efxa6"]
+curve_x = SubResource("Curve_5vw27")
+curve_y = SubResource("Curve_kek77")
+curve_z = SubResource("Curve_4c57u")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1bvp3"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -540, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1080, 1, 1)
+gravity = Vector3(0, 2000, 0)
+scale_min = 0.19999999
+scale_max = 2.2
+scale_over_velocity_curve = SubResource("CurveXYZTexture_efxa6")
+color_initial_ramp = SubResource("GradientTexture1D_272bh")
+alpha_curve = SubResource("CurveTexture_lquwl")
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_lquwl")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_lquwl")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 478.0
+offset_bottom = 268.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(482, 272)
+render_target_update_mode = 4
+
+[node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_0xm2m")]
+
+[node name="WeatherEffects" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Rain" type="GPUParticles2D" parent="WeatherEffects"]
+material = SubResource("CanvasItemMaterial_h2yge")
+position = Vector2(960, 540)
+amount = 1000
+preprocess = 0.5
+visibility_rect = Rect2(-960, -540, 1920, 540)
+process_material = SubResource("ParticleProcessMaterial_1bvp3")
+script = ExtResource("3_h2yge")
+
+[node name="Ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="MainMenu" type="Control" parent="Ui"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Ui/MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Ui/MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -338.0
+offset_top = 91.0
+offset_right = 337.0
+offset_bottom = 247.0
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 100
+bbcode_enabled = true
+text = "[wave amp=100.0 freq=2..0 connected=1]Bamboo Rain[/wave]"
+
+[node name="SkillTreeManager" type="Node" parent="."]
+script = ExtResource("5_lquwl")

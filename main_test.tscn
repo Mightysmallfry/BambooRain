@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7deb2dvppqfe"]
+
+[ext_resource type="Script" uid="uid://h1nnh327axrq" path="res://main.gd" id="1_mijvv"]
+[ext_resource type="Shader" uid="uid://bu2w7ycea54uh" path="res://subpixel.gdshader" id="2_bfipm"]
+[ext_resource type="PackedScene" uid="uid://cf1t61vktok41" path="res://game.tscn" id="2_dxu3u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6lgnl"]
+shader = ExtResource("2_bfipm")
+shader_parameter/cam_offset = Vector2(0, 0)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_mijvv")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_6lgnl")
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 508.0
+offset_bottom = 508.0
+scale = Vector2(4, 4)
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(480, 270)
+render_target_update_mode = 4
+
+[node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_dxu3u")]

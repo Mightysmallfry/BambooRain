@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://kqsq43j4onyo"]
+
+[ext_resource type="Script" uid="uid://bkkprnodu0phs" path="res://Managers/transition_manager.gd" id="1_46ok3"]
+
+[sub_resource type="Animation" id="Animation_46ok3"]
+resource_name = "scene_transition_fade"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/FadeColor:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l0mmg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/FadeColor:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l0mmg"]
+_data = {
+&"RESET": SubResource("Animation_l0mmg"),
+&"scene_transition_fade": SubResource("Animation_46ok3")
+}
+
+[node name="TransitionManager" type="Node"]
+script = ExtResource("1_46ok3")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FadeColor" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_l0mmg")
+}
