@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://0ph7ftln1hx4"]
+[gd_scene load_steps=5 format=3 uid="uid://0ph7ftln1hx4"]
 
 [ext_resource type="Script" uid="uid://310328og5s5o" path="res://SkillTrees/Scripts/SkillTree.gd" id="1_u4b6x"]
+[ext_resource type="Script" uid="uid://ce3dfa7qpvt8e" path="res://Ui/parallax_mouse.gd" id="2_6feyx"]
+[ext_resource type="Texture2D" uid="uid://dggpjo6hpai2o" path="res://SkillTrees/Assets/SkillTreeBackgroundSolid.png" id="3_5buys"]
+[ext_resource type="Texture2D" uid="uid://btgq8he1op74l" path="res://SkillTrees/Assets/SkillTreeBackgroundStars.png" id="4_uuoma"]
 
 [node name="SkillTree" type="Control"]
 layout_mode = 3
@@ -11,15 +14,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_u4b6x")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.0627451, 0.078431375, 0.12156863, 1)
-
 [node name="SkillMap" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -27,3 +21,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ParallaxBackground" type="Node2D" parent="." node_paths=PackedStringArray("MovingBackground")]
+script = ExtResource("2_6feyx")
+MovingBackground = NodePath("BackgroundStars")
+
+[node name="BackgroundSolid" type="Parallax2D" parent="ParallaxBackground"]
+repeat_size = Vector2(960, 540)
+repeat_times = 2
+
+[node name="Solid" type="TextureRect" parent="ParallaxBackground/BackgroundSolid"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_5buys")
+
+[node name="BackgroundStars" type="Parallax2D" parent="ParallaxBackground"]
+repeat_size = Vector2(960, 540)
+repeat_times = 2
+
+[node name="Stars" type="TextureRect" parent="ParallaxBackground/BackgroundStars"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_uuoma")

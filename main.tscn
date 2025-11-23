@@ -84,6 +84,9 @@ render_target_update_mode = 4
 
 [node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_0xm2m")]
 
+[node name="GameObserver" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+
 [node name="WeatherEffects" type="CanvasLayer" parent="."]
 visible = false
 
@@ -96,10 +99,9 @@ visibility_rect = Rect2(-960, -540, 1920, 540)
 process_material = SubResource("ParticleProcessMaterial_1bvp3")
 script = ExtResource("3_h2yge")
 
-[node name="Ui" type="CanvasLayer" parent="."]
-visible = false
+[node name="Menus" type="CanvasLayer" parent="."]
 
-[node name="MainMenu" type="Control" parent="Ui"]
+[node name="MainMenu" type="Control" parent="Menus"]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -108,7 +110,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="Ui/MainMenu"]
+[node name="Panel" type="Panel" parent="Menus/MainMenu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -116,7 +118,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Ui/MainMenu"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Menus/MainMenu"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -132,3 +134,9 @@ text = "[wave amp=100.0 freq=2..0 connected=1]Bamboo Rain[/wave]"
 
 [node name="SkillTreeManager" type="Node" parent="."]
 script = ExtResource("5_lquwl")
+SkillTreeLayerPath = NodePath("SkillTreeLayer")
+SkillTreeCameraPath = NodePath("SkillTreeCamera")
+
+[node name="SkillTreeCamera" type="Camera2D" parent="SkillTreeManager"]
+
+[node name="SkillTreeLayer" type="CanvasLayer" parent="SkillTreeManager"]
